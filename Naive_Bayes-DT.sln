@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2015
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naive_Bayes-DT", "Naive_Bayes-DT.csproj", "{8447ABA4-8380-47FB-BE29-8B5BEBD92C55}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8447ABA4-8380-47FB-BE29-8B5BEBD92C55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8447ABA4-8380-47FB-BE29-8B5BEBD92C55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8447ABA4-8380-47FB-BE29-8B5BEBD92C55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8447ABA4-8380-47FB-BE29-8B5BEBD92C55}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C0A07A2E-4F59-4329-B7E8-0F3A832476AB}
+	EndGlobalSection
+EndGlobal
