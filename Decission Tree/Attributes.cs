@@ -9,19 +9,26 @@ namespace Naive_Bayes_DT.Decission_Tree
 {
     internal class Attributes
     {
-        private List<List<Message>> _entries;
+        // ReSharper disable once MemberCanBePrivate.Global
+        public List<List<Message>> Entries { get; private set; }
 
+        /// <summary>
+        /// Regex Patterns zum finden der Attribute in den Nachrichten
+        /// </summary>
         private const string MatchPhonePattern = @"\d{4,}";
         private const string MatchMoneyPattern = @"[€?$?£?]";
+        // ReSharper disable once InconsistentNaming
+        private const string MatchURLPattern = @"/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/";
+        private const string MatchUpperCasePattern = @"(\b*[A-Z][A-Z]*\b)";
 
         public Attributes(List<List<Message>> entries)
         {
-            this._entries = entries;
+            this.Entries = entries;
         }
 
         public void SearchAndGeneralizeAttributes()
         {
-            foreach (var list in _entries)
+            foreach (var list in Entries)
             {
                 foreach (var entry in list)
                 {
@@ -29,6 +36,9 @@ namespace Naive_Bayes_DT.Decission_Tree
                     SetXXXAttribute(entry);
                     SetFreeAttribute(entry);
                     SetMoneyAttribute(entry);
+                    SetURLAttribute(entry);
+                    SetApostrophAttribute(entry);
+                    SetUpperCaseAttribute(entry);
                 }
             }
         }
@@ -39,6 +49,7 @@ namespace Naive_Bayes_DT.Decission_Tree
             if (matchCollection.Count > 0) message.FollowingNumbers = true;
         }
 
+        // ReSharper disable once InconsistentNaming
         private static void SetXXXAttribute(Message message)
         {
             if (message.Text.ToLower().Contains("xxx")) message.XXX = true; 
@@ -51,8 +62,26 @@ namespace Naive_Bayes_DT.Decission_Tree
 
         private static void SetMoneyAttribute(Message message)
         {
-            var matchCollection = Regex.Matches(MatchMoneyPattern, message.Text);
+            var matchCollection = Regex.Matches(message.Text, MatchMoneyPattern);
             if (matchCollection.Count > 0) message.Money = true;
+        }
+
+        // ReSharper disable once InconsistentNaming
+        private static void SetURLAttribute(Message message)
+        {
+            var matchCollection = Regex.Matches(message.Text, MatchURLPattern);
+            if (matchCollection.Count > 0 || message.Text.ToLower().Contains("www")) message.HyperLink = true;
+        }
+
+        private static void SetApostrophAttribute(Message message)
+        {
+            if (message.Text.Contains("'")) message.Apostroph = true; 
+        }
+
+        private static void SetUpperCaseAttribute(Message message)
+        {
+            var matchCollection = Regex.Matches(message.Text, MatchUpperCasePattern);
+            if (matchCollection.Count > 0) message.UpperCase = true; 
         }
     }
 }

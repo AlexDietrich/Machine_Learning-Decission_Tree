@@ -8,11 +8,11 @@ namespace Naive_Bayes_DT
 {
     public enum Properties
     {
-        Xxx, Free, Money, UpperCase, TelephoneNumber, Url
+        Xxx, Free, Money, UpperCase, TelephoneNumber, Url, Apostroph, NotDefined
     }
 
     public enum Decission
     {
-        Ham, Spam
+        Ham, Spam, notdefined
     }
 }

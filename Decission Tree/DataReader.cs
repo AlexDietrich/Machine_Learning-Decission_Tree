@@ -25,7 +25,7 @@ namespace Naive_Bayes_DT.Decission_Tree
             }
         }
 
-        private void CheckSpamOrHam(string[] message)
+        private void CheckSpamOrHam(IEnumerable<string> message)
         {
             foreach (var line in message)
             {

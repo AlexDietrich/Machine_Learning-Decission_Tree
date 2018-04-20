@@ -42,9 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Decission Tree\CalculateDecissionTree.cs" />
     <Compile Include="Decission Tree\DataReader.cs" />
     <Compile Include="Decission Tree\DecissionProperties.cs" />
     <Compile Include="Decission Tree\FoldCrossValidation.cs" />
+    <Compile Include="Decission Tree\FrequenceTable.cs" />
     <Compile Include="Decission Tree\Message.cs" />
     <Compile Include="Decission Tree\MessageClassifier.cs" />
     <Compile Include="Decission Tree\Attributes.cs" />
