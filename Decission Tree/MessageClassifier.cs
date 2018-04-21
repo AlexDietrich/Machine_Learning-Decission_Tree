@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Naive_Bayes_DT.Decission_Tree;
 
-namespace Naive_Bayes_DT
+namespace Decission_Tree.Decission_Tree
 {
     internal class MessageClassifier
     {

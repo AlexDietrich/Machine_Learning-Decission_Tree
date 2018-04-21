@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Naive_Bayes_DT.Decission_Tree;
+using Decission_Tree.Decission_Tree;
 
-namespace Naive_Bayes_DT
+namespace Decission_Tree
 {
     [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
     [SuppressMessage("ReSharper", "ArrangeTypeModifiers")]

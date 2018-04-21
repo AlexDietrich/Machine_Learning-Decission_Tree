@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{8447ABA4-8380-47FB-BE29-8B5BEBD92C55}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Naive_Bayes_DT</RootNamespace>
-    <AssemblyName>Naive_Bayes-DT</AssemblyName>
+    <RootNamespace>Decission_Tree</RootNamespace>
+    <AssemblyName>Decission_Tree-SMS_Spam</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

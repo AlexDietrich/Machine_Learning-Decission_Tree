@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
 
-namespace Naive_Bayes_DT.Decission_Tree
+namespace Decission_Tree.Decission_Tree
 {
     internal class FoldCrossValidation
     {

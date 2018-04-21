@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
-namespace Naive_Bayes_DT.Decission_Tree
+namespace Decission_Tree.Decission_Tree
 {
     internal class Attributes
     {
