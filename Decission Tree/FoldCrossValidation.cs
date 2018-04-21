@@ -30,7 +30,7 @@ namespace Naive_Bayes_DT.Decission_Tree
                 CreateDataPackagesSpam(spamMessages);
                 CreateDataPackagesHam(hamMessages);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //TODO: Fehlerhandling
                 // ignored

@@ -10,7 +10,7 @@ namespace Naive_Bayes_DT.Decission_Tree
     internal class Attributes
     {
         // ReSharper disable once MemberCanBePrivate.Global
-        public List<List<Message>> Entries { get; private set; }
+        public List<List<Message>> Entries { get; private set; } = new List<List<Message>>();
 
         /// <summary>
         /// Regex Patterns zum finden der Attribute in den Nachrichten
@@ -24,9 +24,16 @@ namespace Naive_Bayes_DT.Decission_Tree
         public Attributes(List<List<Message>> entries)
         {
             this.Entries = entries;
+            SetAttributeToMessage();
         }
 
-        public void SearchAndGeneralizeAttributes()
+        public Attributes(List<Message> messages)
+        {
+            this.Entries.Add(messages);
+            SetAttributeToMessage();
+        }
+
+        public void SetAttributeToMessage()
         {
             foreach (var list in Entries)
             {

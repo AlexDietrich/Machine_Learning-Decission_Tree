@@ -18,7 +18,7 @@ namespace Naive_Bayes_DT.Decission_Tree
                 var dataSet = System.IO.File.ReadAllLines(filePath);
                 CheckSpamOrHam(dataSet);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //TODO: Fehlerhandling
                 // ignored
