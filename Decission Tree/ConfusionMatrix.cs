@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Decission_Tree.Decission_Tree
 {
@@ -16,7 +13,7 @@ namespace Decission_Tree.Decission_Tree
         public void PrintConfusionMatrix(List<ConfusionMatrix> confusionMatrices)
         {
             if (confusionMatrices == null) return;
-            SetAllAttributesFromGivenList(confusionMatrices);
+            SetAllAttributesForPrintOfConfusionMatrix(confusionMatrices);
             Console.WriteLine("|--------------------------------------------------------|");
             Console.WriteLine("|-------------- Prediction: Spam ------- Prediction: Ham-|");
             Console.WriteLine("|Real: Spam ----------- " + PredictionSpamRealSpam + " -------------------- " + PredictionHamRealSpam + " ----|");
@@ -24,7 +21,7 @@ namespace Decission_Tree.Decission_Tree
             Console.WriteLine("|________________________________________________________|");
         }
 
-        private void SetAllAttributesFromGivenList(IEnumerable<ConfusionMatrix> confusionMatrices)
+        private void SetAllAttributesForPrintOfConfusionMatrix(IEnumerable<ConfusionMatrix> confusionMatrices)
         {
             foreach (var confusionMatrix in confusionMatrices)
             {

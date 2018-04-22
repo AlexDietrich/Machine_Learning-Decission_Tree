@@ -23,7 +23,7 @@ namespace Decission_Tree.Decission_Tree
 
         private List<List<Message>> Messages { get; set; }
         private readonly List<List<Message>> _learnMessages = new List<List<Message>>();
-        private List<Message> _validateMessages = new List<Message>();
+        private List<Message> _classifyMessages = new List<Message>();
         private CalculateDecissionTree DecissionTree { get; set; }
 
         public MessageClassifier(FoldCrossValidation messages)
@@ -31,20 +31,24 @@ namespace Decission_Tree.Decission_Tree
             this.Messages = messages.DataSetPackages;
         }
 
-
+        /// <summary>
+        /// Geh durch alle Listen, wähle immer 1 aus welche für die Klassifizierung verwendet wird, 
+        /// die anderen werden für das Lernen des Decission Tree verwendet
+        /// </summary>
         public void ExecuteTenFoldCrossValidation()
         {
             for (var i = 0; i < 10; i++)
             {
+                //_learnMessages.Clear();
                 for (var j = 0; j < 10; j++)
                 {
-                    if (i == j) _validateMessages = Messages[j];
+                    if (i == j) _classifyMessages = Messages[j];
                     else _learnMessages.Add(Messages[j]);
                 }
                 Console.WriteLine("Building Tree ...");
                 LearnDecissionTree();
                 Console.WriteLine("Classification of Block " + (i + 1) + " is running ...");
-                ValidateMessages();
+                ClassifyMessages();
             }
         }
 
@@ -56,11 +60,11 @@ namespace Decission_Tree.Decission_Tree
             DecissionTree = new CalculateDecissionTree(frequenceTable, _porpertyList);
         }
 
-        private void ValidateMessages()
+        private void ClassifyMessages()
         {
             var countAllMessages = 0;
             var confusionMatrix = new ConfusionMatrix();
-            var modifiedList = new Attributes(_validateMessages);
+            var modifiedList = new Attributes(_classifyMessages);
 
             foreach (var list in modifiedList.Entries)
             {

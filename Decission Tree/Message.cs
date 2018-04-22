@@ -2,9 +2,10 @@
 {
     internal class Message
     {
-        public string Classified { get; private set; } = string.Empty;
-        public string Text { get; private set; } = string.Empty;
+        public string Classified { get; private set; }
+        public string Text { get; private set; }
 
+        // ReSharper disable once InconsistentNaming
         public bool XXX { get; set; } = false;
         public bool Free { get; set; } = false;
         public bool Money { get; set; } = false;

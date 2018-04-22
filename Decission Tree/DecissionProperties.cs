@@ -4,9 +4,4 @@
     {
         Xxx, Free, Money, UpperCase, TelephoneNumber, Url, Apostroph, NotDefined
     }
-
-    public enum Decission
-    {
-        Ham, Spam, Notdefined
-    }
 }
