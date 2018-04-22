@@ -78,7 +78,7 @@ namespace Decission_Tree.Decission_Tree
 
         private static void SetApostrophAttribute(Message message)
         {
-            if (message.Text.Contains("'")) message.Apostroph = true; 
+            if (message.Text.Contains("'") || message.Text.Contains("\"")) message.Apostroph = true; 
         }
 
         private static void SetUpperCaseAttribute(Message message)

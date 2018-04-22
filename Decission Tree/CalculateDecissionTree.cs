@@ -5,6 +5,8 @@ namespace Decission_Tree.Decission_Tree
 {
     internal class CalculateDecissionTree
     {
+        #region This Node Variable
+
         private int SpamCount { get; set; }
         private int HamCount { get; set; }
         private int MessagesCount { get; set; }
@@ -15,13 +17,15 @@ namespace Decission_Tree.Decission_Tree
 
         private FrequenceTable FrequenceTable { get; set; }
 
-        private List<List<Message>> ActualMessages { get; set; } = new List<List<Message>>();
+        private List<List<Message>> ActualMessages { get; set; }
 
         private readonly List<Properties> _availableProperties = new List<Properties>();
 
         private readonly IDictionary<Properties, double> _gainValues = new Dictionary<Properties, double>();
 
+        #endregion
 
+        #region New Node Variable
 
         private int NewSpamCountTrue { get; set; }
         private int NewHamCountTrue { get; set; }
@@ -37,7 +41,9 @@ namespace Decission_Tree.Decission_Tree
         private FrequenceTable NewFrequenceTableTrue { get; set; }
         private FrequenceTable NewFrequenceTableFalse { get; set; }
 
+        #endregion
 
+        #region Konstruktor
 
         public CalculateDecissionTree(FrequenceTable table, List<Properties> properties)
         {
@@ -60,6 +66,10 @@ namespace Decission_Tree.Decission_Tree
             Controller();
         }
 
+        #endregion
+
+        #region Classify Message
+
         public void ClassifyMessage(Message message, ref bool spam)
         {
             if (LeafNode)
@@ -67,6 +77,7 @@ namespace Decission_Tree.Decission_Tree
                 spam = LeafNodeSpam;
                 return;
             }
+
             switch (ActualProp)
             {
                 case Properties.Xxx:
@@ -103,6 +114,10 @@ namespace Decission_Tree.Decission_Tree
                     throw new ArgumentOutOfRangeException();
             }
         }
+
+        #endregion
+
+        #region Attribute für aktuellen Node setzen und berechnen
 
         private void SetHamAndSpamCount()
         {
@@ -146,42 +161,10 @@ namespace Decission_Tree.Decission_Tree
                     case Properties.NotDefined:
                         _availableProperties.Add(Properties.NotDefined);
                         break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             }
-        }
-
-        private void Controller()
-        {
-            CalculateEntropyTreeNode();
-            // ReSharper disable once CompareOfFloatsByEqualityOperator
-            GainController();
-            FindBestGain();
-            DeleteActualProperty();
-            if (_availableProperties.Count <= 0 || HamCount == 0 || SpamCount == 0)
-            {
-                LeafNode = true;
-                if (EntropyTreeNode.Equals(0))
-                {
-                    LeafNodeSpam = SpamCount < HamCount;
-                } 
-                return;
-            }
-            SetAttributeForNextNodes();
-        }
-
-        private void SetAttributeForNextNodes()
-        {
-            SetNewMessageList();
-            var modifiedListFalse = new Attributes(NewMessagesFalse);
-            var modifiedListTrue = new Attributes(NewMessagesTrue);
-            modifiedListTrue.SetAttributeToMessage();
-            modifiedListFalse.SetAttributeToMessage();
-            NewFrequenceTableFalse = new FrequenceTable(modifiedListFalse.Entries);
-            NewFrequenceTableTrue = new FrequenceTable(modifiedListTrue.Entries);
-            NewNodeFalse =
-                new CalculateDecissionTree(NewFrequenceTableTrue, NewSpamCountTrue, NewHamCountTrue, _availableProperties);
-            NewNodeTrue =
-                new CalculateDecissionTree(NewFrequenceTableFalse, NewSpamCountFalse, NewHamCountFalse, _availableProperties);
         }
 
         private void CalculateEntropyTreeNode()
@@ -193,10 +176,73 @@ namespace Decission_Tree.Decission_Tree
                 EntropyTreeNode = 0;
                 return;
             }
+
             // Entropy = - Wahrscheinlichkeit(yes) * log2(Wahrscheinlichkeit(yes)) - Wahrscheinlichkeit(no) * log2(Wahrscheinlichkeit(no))
             EntropyTreeNode -= ((double)SpamCount / MessagesCount) * (Math.Log((double)SpamCount / MessagesCount, 2));
             EntropyTreeNode -= ((double)HamCount / MessagesCount) * (Math.Log((double)HamCount / MessagesCount, 2));
         }
+
+        /// <summary>
+        /// Finde den höchsten Information Gain
+        /// </summary>
+        private void FindBestGain()
+        {
+            double maxGain = 0;
+            foreach (var gainValue in _gainValues)
+            {
+                if (!(maxGain < gainValue.Value)) continue;
+                maxGain = gainValue.Value;
+                ActualProp = gainValue.Key;
+            }
+        }
+
+        #endregion
+
+        #region Controller
+
+        private void Controller()
+        {
+            CalculateEntropyTreeNode();
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            GainController();
+            FindBestGain();
+            DeleteActualPropertyForNextNode();
+            if (_availableProperties.Count <= 0 || HamCount == 0 || SpamCount == 0)
+            {
+                LeafNode = true;
+                if (EntropyTreeNode.Equals(0))
+                {
+                    LeafNodeSpam = SpamCount < HamCount;
+                }
+
+                return;
+            }
+
+            NextNodeController();
+        }
+
+        private void NextNodeController()
+        {
+            SetParameterForNextNode();
+            var modifiedListFalse = new Attributes(NewMessagesFalse);
+            var modifiedListTrue = new Attributes(NewMessagesTrue);
+            modifiedListTrue.SetAttributeToMessage();
+            modifiedListFalse.SetAttributeToMessage();
+            NewFrequenceTableFalse = new FrequenceTable(modifiedListFalse.Entries);
+            NewFrequenceTableFalse.CreateFrequenceTables();
+            NewFrequenceTableTrue = new FrequenceTable(modifiedListTrue.Entries);
+            NewFrequenceTableTrue.CreateFrequenceTables();
+            NewNodeFalse =
+                new CalculateDecissionTree(NewFrequenceTableTrue, NewSpamCountTrue, NewHamCountTrue,
+                    _availableProperties);
+            NewNodeTrue =
+                new CalculateDecissionTree(NewFrequenceTableFalse, NewSpamCountFalse, NewHamCountFalse,
+                    _availableProperties);
+        }
+
+        #endregion
+
+        #region Information Gain
 
         private void GainController()
         {
@@ -231,6 +277,7 @@ namespace Decission_Tree.Decission_Tree
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
+
                 _gainValues.Add(property, gain);
             }
         }
@@ -255,15 +302,15 @@ namespace Decission_Tree.Decission_Tree
             AttributeYes = hamYes + spamYes;
             AttributeNo = hamNo + spamNo;
             var messageComplete = AttributeNo + AttributeYes;
-            var entropyYes = GivenNumbersEntropy(spamYes, hamYes);
-            var entropyNo = GivenNumbersEntropy(spamNo, hamNo);
+            var entropyYes = EntropyForInformationGain(spamYes, hamYes);
+            var entropyNo = EntropyForInformationGain(spamNo, hamNo);
 
-            gain -= (double)AttributeYes / messageComplete * entropyYes;    //spam yes und spam no
+            gain -= (double)AttributeYes / messageComplete * entropyYes; //spam yes und spam no
             gain -= (double)AttributeNo / messageComplete * entropyNo;
             return gain;
         }
 
-        private double GivenNumbersEntropy(double yes, double no)
+        private static double EntropyForInformationGain(double yes, double no)
         {
             var sum = yes + no;
             double entropy = 0;
@@ -277,29 +324,19 @@ namespace Decission_Tree.Decission_Tree
             return entropy;
         }
 
-        /// <summary>
-        /// Finds the highest gain of the decission tree node.
-        /// </summary>
-        private void FindBestGain()
-        {
-            double maxGain = 0;
-            foreach (var gainValue in _gainValues)
-            {
-                if (!(maxGain < gainValue.Value)) continue;
-                maxGain = gainValue.Value;
-                ActualProp = gainValue.Key;
-            }
-        }
+        #endregion
+
+        #region Berechnung Next Node Parameter
 
         /// <summary>
         /// Löschen der aktuellen Status um den gleichen status nicht nochmal zu berechnen.
         /// </summary>
-        private void DeleteActualProperty()
+        private void DeleteActualPropertyForNextNode()
         {
             if (_availableProperties.Contains(ActualProp)) _availableProperties.Remove(ActualProp);
         }
 
-        private void SetNewMessageList()
+        private void SetParameterForNextNode()
         {
             var spamMessageTrue = new List<string>();
             var spamMessageFalse = new List<string>();
@@ -379,7 +416,9 @@ namespace Decission_Tree.Decission_Tree
 
         private static bool IsSpam(Message message)
         {
-            return message.Classified == "spam";
+            return message.Classified.Equals("spam");
         }
+
+        #endregion
     }
 }

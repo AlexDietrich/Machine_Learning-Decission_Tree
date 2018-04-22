@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Decission Tree\CalculateDecissionTree.cs" />
+    <Compile Include="Decission Tree\ConfusionMatrix.cs" />
     <Compile Include="Decission Tree\DataReader.cs" />
     <Compile Include="Decission Tree\DecissionProperties.cs" />
     <Compile Include="Decission Tree\FoldCrossValidation.cs" />

@@ -6,8 +6,11 @@ namespace Decission_Tree.Decission_Tree
     internal class FrequenceTable
     {
         public List<List<Message>> Messages { get; private set; }
+
         /// <summary>
-        /// Liste von allen Nachrichten mit den jeweiligen Attributen. 1. Wert = Attribut Ja oder Nein. 2. Wert = Spam Ja oder Nein
+        /// Liste von allen Nachrichten mit den jeweiligen Attributen. 
+        /// 1. Item von Tuple = Attribut(true || false). 
+        /// 2. Item von Tuple = Spam (true ||false).
         /// </summary>
         // ReSharper disable once InconsistentNaming
         public List<Tuple<bool, bool>> XXXTable { get; private set; } = new List<Tuple<bool, bool>>();
@@ -30,10 +33,9 @@ namespace Decission_Tree.Decission_Tree
         public FrequenceTable(List<List<Message>> messages)
         {
             this.Messages = messages;
-            CreateFrequenceTables();
         }
 
-        private void CreateFrequenceTables()
+        public void CreateFrequenceTables()
         {
             foreach (var messageList in Messages)
             {
@@ -100,6 +102,7 @@ namespace Decission_Tree.Decission_Tree
             }
         }           
                     
+        // ReSharper disable once InconsistentNaming
         private void AddAttributeURL(Message message)
         {
             if (CheckSpamOrHam(message))
@@ -139,9 +142,7 @@ namespace Decission_Tree.Decission_Tree
         /// <summary>
         /// Return true im Fall, dass die nachricht spam ist, false im falle das es ham ist.
         /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        private bool CheckSpamOrHam(Message message)
+        private static bool CheckSpamOrHam(Message message)
         {
             return message.Classified.Equals("spam");
         }

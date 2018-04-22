@@ -7,6 +7,6 @@
 
     public enum Decission
     {
-        Ham, Spam, notdefined
+        Ham, Spam, Notdefined
     }
 }
