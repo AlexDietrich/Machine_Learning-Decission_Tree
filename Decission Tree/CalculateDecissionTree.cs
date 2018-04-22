@@ -203,35 +203,40 @@ namespace Decission_Tree.Decission_Tree
         private void Controller()
         {
             CalculateEntropyTreeNode();
-            // ReSharper disable once CompareOfFloatsByEqualityOperator
             GainController();
             FindBestGain();
             DeleteActualPropertyForNextNode();
-            if (_availableProperties.Count <= 0 || HamCount == 0 || SpamCount == 0)
+            //Wenn es keine verfügbaren Eigeschaften mehr gibt oder kein Ham oder kein Spam mehr dabei ist, 
+            //handelt es sich um einen Blattknoten und die Rekursion muss abgebrochen werden 
+            if (_availableProperties.Count == 0 || HamCount == 0 || SpamCount == 0)
             {
                 LeafNode = true;
+                //Wenn die Entropy 0 beträgt, dann muss die Klassifizierung ob es sich um Spam oder Ham handelt festgelegt werden.
                 if (EntropyTreeNode.Equals(0))
                 {
                     LeafNodeSpam = SpamCount < HamCount;
                 }
-
                 return;
             }
-
             NextNodeController();
         }
 
         private void NextNodeController()
         {
             SetParameterForNextNode();
+            //Ermittelt alle Attribute von den Nachrichten welche übergeben werden.
             var modifiedListFalse = new Attributes(NewMessagesFalse);
             var modifiedListTrue = new Attributes(NewMessagesTrue);
             modifiedListTrue.SetAttributeToMessage();
             modifiedListFalse.SetAttributeToMessage();
+            //Erstellt eine FrequenceTable von allen Nachrichten welche übergeben werden. Aufgeteilt in sämtlich Attribute.
             NewFrequenceTableFalse = new FrequenceTable(modifiedListFalse.Entries);
             NewFrequenceTableFalse.CreateFrequenceTables();
             NewFrequenceTableTrue = new FrequenceTable(modifiedListTrue.Entries);
             NewFrequenceTableTrue.CreateFrequenceTables();
+            //Wenn Knoten weiter mit false geht, darf kein Element mehr übergeben werden welches dieses Attribute nicht besitzt
+            //Daher wir bei false die Werte von True übergeben und bei True die Werte von False!!!
+            //Der Rekursive Aufruf erfolgt hier!!
             NewNodeFalse =
                 new CalculateDecissionTree(NewFrequenceTableTrue, NewSpamCountTrue, NewHamCountTrue,
                     _availableProperties);

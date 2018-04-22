@@ -31,7 +31,7 @@ namespace Decission_Tree
             var elapsedTime = (double) stopwatch.ElapsedMilliseconds / 1000;
             var allMessages = (double) dataReader.SpamMessages.Count + dataReader.HamMessages.Count;
             Console.WriteLine("The Decission-Tree-Algorithm was working for " + Math.Round(elapsedTime, 2) + " seconds to classify Spam or Ham of " + Math.Round(allMessages, 0) + " messages.");
-            Console.WriteLine("Each second were classified " + Math.Round(value: allMessages/elapsedTime, digits: 0) + " messages.");
+            Console.WriteLine("Each second were classified " + Math.Round(value: allMessages/elapsedTime, digits: 0) + " messages. (includes Tree-Building sessions)");
         }
     }
 }
